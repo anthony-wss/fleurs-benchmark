@@ -9,6 +9,8 @@ import os
 OUTPUT_DIR = "./whisper_results"
 
 def get_iso_693_3(lang_id):
+    if lang_id == 'jw':
+        lang_id = 'jv'
     language = iso639.Language.match(lang_id)
     return dataclasses.asdict(language)['part3']
 
@@ -34,9 +36,9 @@ for i in tqdm(range(fleurs_langID.num_rows)):
 import pickle as pkl
 
 pkl.dump(preds, open(os.path.join(OUTPUT_DIR, "whisper_prediction.pkl"), "wb"))
-pkl.dump(preds, open(os.path.join(OUTPUT_DIR, "whisper_true_labels.pkl"), "wb"))
+pkl.dump(true_label, open(os.path.join(OUTPUT_DIR, "whisper_true_labels.pkl"), "wb"))
 
 from sklearn.metrics import classification_report
 
 class_names = [get_iso_693_3(decode[s]) for s in range(102)]
-print(classification_report(true_label, preds, labels=list(range(len(class_names))), target_names=class_names, zero_division=0), file=open(os.path.join(OUTPUT_DIR, 'whisper_report.txt'), "w"))
+print(classification_report(true_label, preds, zero_division=0), file=open(os.path.join(OUTPUT_DIR, 'whisper_report.txt'), "w"))
