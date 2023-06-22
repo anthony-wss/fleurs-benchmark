@@ -11,4 +11,6 @@ def get_iso_693_3(lang_id):
     code = dataclasses.asdict(language)['part3']
     if lang_id == 'mya':
         return 'bur'
+    if lang_id == 'tgl':
+        return 'fil'
     return code
